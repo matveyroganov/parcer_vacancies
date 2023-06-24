@@ -37,7 +37,8 @@ class SuperJobAPI(ConnectAPI):
             'Authorization': 'Bearer r.000000010000001.example.access_token',
             'Content-Type': 'application/x-www-form-urlencoded',
             'keywords': search,
-            'c': 1
+            'c': 1,
+            'count': 100
         }
 
         response = requests.get(self.url, headers=headers, params=params).json()

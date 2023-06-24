@@ -99,16 +99,21 @@ class Vacancy:
         """
         return self.__experience
 
-    def __eq__(self, other):
-        return self.__salary_from == other.__salary_from
-
     def __gt__(self, other):
-        return self.__salary_from > other.__salary_from
+        if isinstance(other, Vacancy):
+            return self.__salary_from >= other.__salary_from
+        raise TypeError
 
     def __le__(self, other):
-        return self.__salary_from <= other.__salary_from
+        if isinstance(other, Vacancy):
+            return self.__salary_from >= other.__salary_from
+        return self.__salary_from < other.__salary_from
 
     def dict_vacancy(self):
+        """
+        Создаем словарь с атрибутами
+        """
+
         vacancy = {
             "name_vacancy": self.__name_vac,
             "url_vacancy": self.__url_vac,
@@ -123,8 +128,8 @@ class Vacancy:
     def get_vac_hh(cls, vacancies_hh: dict | None):
         """
         Получаем вакансии из Head Hunter
-        :param vacancies_hh: список вакансий, полученный через API
-        :return: список объектов класса Vacancy
+        :param vacancies_hh: список вакансий, полученный через API HeadHunter
+        :return: список объектов класса Vacancy для HeadHunter
         """
         all_vacancies_hh = []
         vac_hh = vacancies_hh["items"]
@@ -144,3 +149,25 @@ class Vacancy:
             all_vacancies_hh.append(vacancy_hh)
 
         return all_vacancies_hh
+
+    @classmethod
+    def get_vac_sj(cls, vacancies_sj: dict | None):
+        """
+        Получаем вакансии из SuperJob
+        :param vacancies_sj: список вакансий, полученный через API SuperJob
+        :return: список объектов класса Vacancy для SuperJob
+        """
+        all_vacancies_sj = []
+        vac_sj = vacancies_sj["objects"]
+
+        for params in vac_sj:
+            name_sj = params["profession"]
+            salary_from_sj = params["payment_from"]
+            salary_to_sj = params["payment_to"]
+            url_hh = params["link"]
+            requirement_sj = params["vacancyRichText"]
+            experience_sj = params["experience"]["title"]
+            vacancy_sj = cls(name_sj, url_hh, salary_from_sj, salary_to_sj, requirement_sj, experience_sj)
+            all_vacancies_sj.append(vacancy_sj)
+
+        return all_vacancies_sj
