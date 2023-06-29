@@ -32,34 +32,47 @@ def user_interaction():
     # просит ввести слова для фильтрации вакансии
     filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split()
 
-    # формирует объект для работы с API HeadHunter
-    obj_hh_api = HeadHunterAPI()
-
-    # формирует объект для работы с API SuperJob
-    obj_sj_api = SuperJobAPI()
-
-    # получает вакансии с API HeadHunter исходя из запроса юзера
-    hh_vac_by_search = obj_hh_api.get_vacancies(search_query)
-
-    # получает вакансии с API SuperJob исходя из запроса юзера
-    sj_vac_by_search = obj_sj_api.get_vacancies(search_query)
-
-    # получает список вакансий HeadHunter с определенными данными, которые прописаны в классе Vacancy
-    list_obj_hh_vac = Vacancy.get_vac_hh(hh_vac_by_search)
-
-    # получает список вакансий SuperJob с определенными данными, которые прописаны в классе Vacancy
-    list_obj_sj_vac = Vacancy.get_vac_sj(sj_vac_by_search)
-
     list_all_vacancies = []
 
-    # проверка условия выбора платформ по сбору вакансий
+    # проверяет условия выбора платформы
+
     if input_platforms == 1:
+        # формирует объект для работы с API HeadHunter
+        obj_hh_api = HeadHunterAPI()
+
+        # получает вакансии с API HeadHunter исходя из запроса юзера
+        hh_vac_by_search = obj_hh_api.get_vacancies(search_query)
+
+        # получает список вакансий HeadHunter с определенными данными, которые прописаны в классе Vacancy
+        list_obj_hh_vac = Vacancy.get_vac_hh(hh_vac_by_search)
+
         list_all_vacancies = list_obj_hh_vac
 
     if input_platforms == 2:
+        # формирует объект для работы с API SuperJob
+        obj_sj_api = SuperJobAPI()
+
+        # получает вакансии с API SuperJob исходя из запроса юзера
+        sj_vac_by_search = obj_sj_api.get_vacancies(search_query)
+
+        # получает список вакансий SuperJob с определенными данными, которые прописаны в классе Vacancy
+        list_obj_sj_vac = Vacancy.get_vac_sj(sj_vac_by_search)
+
         list_all_vacancies = list_obj_sj_vac
 
     if input_platforms == 3:
+        # формирует объект для работы с API SuperJob и HeadHunter
+        obj_hh_api = HeadHunterAPI()
+        obj_sj_api = SuperJobAPI()
+
+        # получает вакансии с API HeadHunter и SuperJob исходя из запроса юзера
+        hh_vac_by_search = obj_hh_api.get_vacancies(search_query)
+        sj_vac_by_search = obj_sj_api.get_vacancies(search_query)
+
+        # получает список вакансий HeadHunter и SuperJob с определенными данными, которые прописаны в классе Vacancy
+        list_obj_hh_vac = Vacancy.get_vac_hh(hh_vac_by_search)
+        list_obj_sj_vac = Vacancy.get_vac_sj(sj_vac_by_search)
+
         list_all_vacancies = list_obj_hh_vac + list_obj_sj_vac
 
     # фильтрует список вакансий по ключевым словам

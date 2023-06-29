@@ -62,8 +62,7 @@ class JSONSaver(AbstractJSONSaver):
         """
         Удаление данных из файла JSON
         """
-        with open(self.file, "r", encoding="utf-8") as file:
-            list_vacancy = json.load(file)
-        clear_list_vacancy = list_vacancy.clear()
-        with open(self.file, "w", encoding="utf-8") as f:
-            json.dump(clear_list_vacancy, f)
+        with open(self.file, "w", encoding="utf-8") as file:
+            list_vacancy = []
+            json.dump(list_vacancy, file)
+
